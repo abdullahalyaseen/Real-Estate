@@ -9,6 +9,18 @@ use Illuminate\Support\Facades\Storage;
 class Project extends Model
 {
 
+    protected $fillable =[
+        'name',
+        'province',
+        'district',
+        'under_constructions',
+        'move_date',
+        'min_price',
+        'max_price',
+        'type',
+        'specifications',
+    ];
+
     use HasFactory;
 
     public function marker()

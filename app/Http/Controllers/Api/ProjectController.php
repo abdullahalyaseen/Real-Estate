@@ -50,7 +50,7 @@ class ProjectController extends Controller
             'lag' => ['required', 'regex:/^\d+(\.\d{1,100})?$/'],
             'icon_type' => ['regex:/^([a-zA-Z]+)(\s[a-zA-Z]+)*$/', 'max:20'],
             'repres_name' => ['required', 'regex:/^([a-zA-Z]+)(\s[a-zA-Z]+)*$/', 'max:50'],
-            'phone_number' => ['required', 'digits_between:10,15',],
+            'phone_number' => ['required', 'numeric','digits_between:10,15',],
         ]);
 
 
@@ -103,7 +103,20 @@ class ProjectController extends Controller
     }
 
 
-    public function updateProject($id){
-
+    public function updateProject(Request $request, $id){
+        $request->validate([
+            'name' => [ 'regex:/^([a-zA-Z]+)(\s[a-zA-Z]+)*$/', 'max:50'],
+            'province' => [ 'regex:/^([a-zA-Z]+)(\s[a-zA-Z]+)*$/', 'max:50'],
+            'district' => [ 'regex:/^([a-zA-Z]+)(\s[a-zA-Z]+)*$/', 'max:50'],
+            'under_constructions' => [ 'boolean'],
+            'move_date' => ['date_format:Y-m-d'],
+            'min_price' => [ 'numeric', 'digits_between:1,9'],
+            'max_price' => [ 'numeric', 'digits_between:1,9'],
+            'type' => [ 'regex:/^([a-zA-Z]+)(\s[a-zA-Z]+)*$/', 'max:50'],
+            'specifications' => [ 'array', 'max:100'],
+        ]);
+        $project = Project::find($id);
+        $project->update($request->toArray());
+        return response(['message'=>$project->name.'has been updated'],200);
     }
 }

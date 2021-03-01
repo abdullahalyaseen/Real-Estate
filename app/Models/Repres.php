@@ -9,6 +9,11 @@ class Repres extends Model
 {
     use HasFactory;
 
+    protected $fillable=[
+        'repres_name',
+        'phone_number',
+    ];
+
     public function project(){
         return $this->belongsTo(Project::class,'project_id','id');
     }
