@@ -76,6 +76,7 @@ class ProjectController extends Controller
         ///Create Representative for Project:
         RepresController::createRepres($request->repres_name,$request->phone_number,$projectId);
 
+        return response(['message'=>$project->name .' '. 'has been created'],200);
     }
 
 
