@@ -59,27 +59,15 @@ class UserController extends Controller
             'role' => ['max:5'],
             'number' => ['digits_between:10,15',],
         ]);
-        $user = User::findOrFail($id);
+        ///Convert $request to array in order ot make password hash
+        $data = $request->toArray();
+        if($data['password']){
+            $data['password'] = Hash::make($data['password']);
+        }
+        ///Using ->update to update any field optionally and according to fillable
+        /// in User model
+        $user = User::findOrFail($id)->update($data);
 
-        if ($request->first_name) {
-            $user->first_name = $request->first_name;
-        }
-        if ($request->last_name) {
-            $user->last_name = $request->last_name;
-        }
-        if ($request->email) {
-            $user->email = $request->email;
-        }
-        if ($request->password) {
-            $user->password = Hash::make($request->password);
-        }
-        if ($request->role) {
-            $user->role = $request->role;
-        }
-        if ($request->number) {
-            $user->number = $request->number;
-        }
-        $user->save();
         return response(['message'=>'User has been updated'],200);
     }
 
