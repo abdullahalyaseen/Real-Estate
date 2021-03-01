@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\MarkerController;
+use App\Http\Controllers\Api\PhotoController;
 use App\Http\Controllers\Api\ProjectController;
 use App\Http\Controllers\Api\TripController;
 use App\Http\Controllers\Api\UserController;
@@ -35,18 +36,23 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         //User operations-------------start
         Route::get('all-users', [UserController::class, 'getAllUsers']);
         Route::post('new-user', [UserController::class, 'createUser']);
-        Route::post('update-user/{id}',[UserController::class,'updateUser']);
+        Route::post('update-user/{id}', [UserController::class, 'updateUser']);
         Route::delete('delete-user/{id}', [UserController::class, 'deleteUser']);
         //User operations-------------end
 
         //Project operations-------------start
 
-        Route::post('new-project',[ProjectController::class,'createProject']);
-        Route::delete('delete-project/{id}',[ProjectController::class,'deleteProject']);
+        Route::post('new-project', [ProjectController::class, 'createProject']);
+        Route::delete('delete-project/{id}', [ProjectController::class, 'deleteProject']);
+        Route::post('update-project/{id}',[ProjectController::class,'updateProject']);
+        Route::post('project/{id}/add-photos', [ProjectController::class, 'addProjectPhotos']);
+
 
         //Project operations-------------end
 
-
+        //Photos operations-------------start
+        Route::delete('photos/{id}', [PhotoController::class, 'deletePhoto']);
+        //Photos operations-------------end
 
         //Trips operations-------------start
         Route::get('all-trips', [TripController::class, 'getAllTrips']);

@@ -5,12 +5,13 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ProjectResource;
 use App\Http\Resources\ProjectsResource;
-use App\Models\Marker;
 use App\Models\Project;
-use App\Models\Repres;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
-use function MongoDB\BSON\toJSON;
-use function PHPUnit\Framework\assertJson;
+use Illuminate\Http\Response;
+
+
 
 class ProjectController extends Controller
 {
@@ -29,7 +30,7 @@ class ProjectController extends Controller
      */
     public function getProjectById($id)
     {
-        $project = Project::with('flats', 'repres', 'marker')->where('id', $id)->first();
+        $project = Project::with('flats', 'repres', 'marker','photos:id,url')->where('id', $id)->first();
         return new ProjectResource($project);
     }
 
@@ -79,11 +80,30 @@ class ProjectController extends Controller
         return response(['message'=>$project->name .' '. 'has been created'],200);
     }
 
-
+    /**
+     * @param $id
+     * @return Application|ResponseFactory|Response
+     */
     public function deleteProject($id){
         $project = Project::findOrFail($id);
         $name = $project->name;
         $project->delete();
         return response(['message'=>$name .' '. 'has been deleted'],200);
+    }
+
+
+    public function addProjectPhotos(Request $request, $id){
+        $project = Project::findOrFail($id);
+        $request->validate([
+            'files'=>['required','image','max:10240']
+        ]);
+
+        return PhotoController::addProjectPhotos($request,$project->id);
+
+    }
+
+
+    public function updateProject($id){
+
     }
 }

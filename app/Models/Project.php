@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Project extends Model
 {
@@ -39,11 +40,14 @@ class Project extends Model
     {
         parent::boot();
         static::deleted(function (Project $project) {
+            $id = $project->id;
+            Storage::deleteDirectory('/images/projects/'.$id.'/');
             $project->marker()->delete();
             $project->photos()->delete();
             $project->videos()->delete();
             $project->flats()->delete();
             $project->repres()->delete();
+
         });
     }
 }

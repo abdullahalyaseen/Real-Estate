@@ -161,7 +161,7 @@
       <workItem from="1613969830705" duration="711000" />
       <workItem from="1614407588431" duration="15616000" />
       <workItem from="1614544609119" duration="4420000" />
-      <workItem from="1614555338467" duration="8081000" />
+      <workItem from="1614555338467" duration="15409000" />
     </task>
     <servers />
   </component>
@@ -169,10 +169,14 @@
     <option name="version" value="3" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="215" y="276" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1614560133302">
+    <state x="689" y="351" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1614576193702">
       <screen x="0" y="25" width="1920" height="985" />
     </state>
-    <state x="215" y="276" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.25.1920.985@0.25.1920.985" timestamp="1614560133302" />
+    <state x="689" y="351" key="#com.intellij.fileTypes.FileTypeChooser/0.25.1920.985@0.25.1920.985" timestamp="1614576193702" />
+    <state x="215" y="276" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1614578733522">
+      <screen x="0" y="25" width="1920" height="985" />
+    </state>
+    <state x="215" y="276" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.25.1920.985@0.25.1920.985" timestamp="1614578733522" />
     <state x="239" y="434" width="475" height="229" key="ComposerInitDialogKey" timestamp="1613968250445">
       <screen x="0" y="25" width="1920" height="985" />
     </state>
@@ -193,5 +197,9 @@
       <screen x="0" y="25" width="1920" height="985" />
     </state>
     <state width="1743" height="264" key="GridCell.Tab.0.right/0.25.1920.985@0.25.1920.985" timestamp="1613966961414" />
+    <state x="672" y="272" width="602" height="490" key="find.popup" timestamp="1614575321823">
+      <screen x="0" y="25" width="1920" height="985" />
+    </state>
+    <state x="672" y="272" width="602" height="490" key="find.popup/0.25.1920.985@0.25.1920.985" timestamp="1614575321823" />
   </component>
 </project>
