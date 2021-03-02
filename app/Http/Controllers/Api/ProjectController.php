@@ -12,7 +12,6 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 
-
 class ProjectController extends Controller
 {
     /**
@@ -30,8 +29,10 @@ class ProjectController extends Controller
      */
     public function getProjectById($id)
     {
-        $project = Project::with('flats', 'repres', 'marker','photos:id,url')->where('id', $id)->first();
+        $project = Project::with('flats', 'repres', 'marker', 'photos')->where('id', $id)->first();
+
         return new ProjectResource($project);
+
     }
 
     public function createProject(Request $request)
@@ -46,11 +47,11 @@ class ProjectController extends Controller
             'max_price' => ['required', 'numeric', 'digits_between:1,9'],
             'type' => ['required', 'regex:/^([a-zA-Z]+)(\s[a-zA-Z]+)*$/', 'max:50'],
             'specifications' => ['required', 'array', 'max:100'],
-            'lat' => ['required', 'regex:/^\d+(\.\d{1,100})?$/'],
-            'lag' => ['required', 'regex:/^\d+(\.\d{1,100})?$/'],
+            'lat' => ['required'],
+            'lag' => ['required'],
             'icon_type' => ['regex:/^([a-zA-Z]+)(\s[a-zA-Z]+)*$/', 'max:20'],
             'repres_name' => ['required', 'regex:/^([a-zA-Z]+)(\s[a-zA-Z]+)*$/', 'max:50'],
-            'phone_number' => ['required', 'numeric','digits_between:10,15',],
+            'phone_number' => ['required', 'numeric', 'digits_between:10,15',],
         ]);
 
 
@@ -72,51 +73,57 @@ class ProjectController extends Controller
 
 
         ///Create Marker for location:
-        MarkerController::createMarker($request->lat,$request->lag,$request->icon_type,$projectId);
+        MarkerController::createMarker($request->lat, $request->lag, $request->icon_type, $projectId);
 
         ///Create Representative for Project:
-        RepresController::createRepres($request->repres_name,$request->phone_number,$projectId);
+        RepresController::createRepres($request->repres_name, $request->phone_number, $projectId);
 
-        return response(['message'=>$project->name .' '. 'has been created'],200);
+        return response(['message' => $project->name . ' ' . 'has been created'], 200);
     }
 
     /**
      * @param $id
      * @return Application|ResponseFactory|Response
      */
-    public function deleteProject($id){
+    public
+    function deleteProject($id)
+    {
         $project = Project::findOrFail($id);
         $name = $project->name;
         $project->delete();
-        return response(['message'=>$name .' '. 'has been deleted'],200);
+        return response(['message' => $name . ' ' . 'has been deleted'], 200);
     }
 
 
-    public function addProjectPhotos(Request $request, $id){
+    public
+    function addProjectPhotos(Request $request, $id)
+    {
         $project = Project::findOrFail($id);
         $request->validate([
-            'files'=>['required','image','max:10240']
+            'files' => ['required', 'image', 'max:10240']
         ]);
 
-        return PhotoController::addProjectPhotos($request,$project->id);
+        return PhotoController::addProjectPhotos($request, $project->id);
 
     }
 
 
-    public function updateProject(Request $request, $id){
+    public
+    function updateProject(Request $request, $id)
+    {
         $request->validate([
-            'name' => [ 'regex:/^([a-zA-Z]+)(\s[a-zA-Z]+)*$/', 'max:50'],
-            'province' => [ 'regex:/^([a-zA-Z]+)(\s[a-zA-Z]+)*$/', 'max:50'],
-            'district' => [ 'regex:/^([a-zA-Z]+)(\s[a-zA-Z]+)*$/', 'max:50'],
-            'under_constructions' => [ 'boolean'],
+            'name' => ['regex:/^([a-zA-Z]+)(\s[a-zA-Z]+)*$/', 'max:50'],
+            'province' => ['regex:/^([a-zA-Z]+)(\s[a-zA-Z]+)*$/', 'max:50'],
+            'district' => ['regex:/^([a-zA-Z]+)(\s[a-zA-Z]+)*$/', 'max:50'],
+            'under_constructions' => ['boolean'],
             'move_date' => ['date_format:Y-m-d'],
-            'min_price' => [ 'numeric', 'digits_between:1,9'],
-            'max_price' => [ 'numeric', 'digits_between:1,9'],
-            'type' => [ 'regex:/^([a-zA-Z]+)(\s[a-zA-Z]+)*$/', 'max:50'],
-            'specifications' => [ 'array', 'max:100'],
+            'min_price' => ['numeric', 'digits_between:1,9'],
+            'max_price' => ['numeric', 'digits_between:1,9'],
+            'type' => ['regex:/^([a-zA-Z]+)(\s[a-zA-Z]+)*$/', 'max:50'],
+            'specifications' => ['array', 'max:100'],
         ]);
         $project = Project::find($id);
         $project->update($request->toArray());
-        return response(['message'=>$project->name.'has been updated'],200);
+        return response(['message' => $project->name . 'has been updated'], 200);
     }
 }

@@ -7,6 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Marker extends Model
 {
+
+    protected $fillable=[
+        'lat',
+        'lag',
+        'icon_type',
+    ];
     use HasFactory;
 
     public function project(){

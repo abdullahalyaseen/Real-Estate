@@ -24,7 +24,7 @@ class RepresController extends Controller
             'repres_name'=> ['regex:/^([a-zA-Z]+)(\s[a-zA-Z]+)*$/','max:50'],
             'phone_number'=>['numeric','digits_between:10,15'],
         ]);
-        $repres = Repres::find($id);
+        $repres = Repres::findOrFail($id);
         $repres->update($request->toArray());
         return response(['message'=>'Representative has been updated'],200);
     }

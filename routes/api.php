@@ -50,6 +50,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::post('update-repres/{id}', [RepresController::class, 'updateRepres']);
         //Representative operations-------------end
 
+        //Marker operations-------------start
+        Route::post('update-marker/{id}',[MarkerController::class,'updateMarker']);
+        //Marker operations-------------end
+
         //Photos operations-------------start
         Route::delete('photos/{id}', [PhotoController::class, 'deletePhoto']);
         //Photos operations-------------end
