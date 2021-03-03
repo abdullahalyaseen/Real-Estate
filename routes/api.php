@@ -36,6 +36,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::group(['middleware' => ['isadmin']], function () {
         //User operations-------------start
         Route::get('all-users', [UserController::class, 'getAllUsers']);
+        Route::get('user/{id}', [UserController::class, 'getUser']);
         Route::post('new-user', [UserController::class, 'createUser']);
         Route::post('update-user/{id}', [UserController::class, 'updateUser']);
         Route::delete('delete-user/{id}', [UserController::class, 'deleteUser']);
@@ -45,27 +46,20 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::post('new-project', [ProjectController::class, 'createProject']);
         Route::delete('delete-project/{id}', [ProjectController::class, 'deleteProject']);
         Route::post('update-project', [ProjectController::class, 'updateProject']);
-
-
-
             //Representative operations-------------start
             Route::post('update-repres/{id}', [RepresController::class, 'updateRepres']);
             //Representative operations-------------end
-
             //Marker operations-------------start
             Route::post('update-marker/{id}',[MarkerController::class,'updateMarker']);
             //Marker operations-------------end
-
             //Photos operations-------------start
             Route::post('project/add-photos', [ProjectController::class, 'addProjectPhotos']);
             Route::delete('photos/{id}', [PhotoController::class, 'deletePhoto']);
             //Photos operations-------------end
-
             //Video operations-------------start
             Route::post('project/add-videos', [ProjectController::class, 'addProjectVideos']);
             Route::delete('videos/{id}', [VideoController::class, 'deleteVideo']);
             //Video operations-------------end
-
             //Flats operations-------------start
             Route::get('flat-types', [FlatController::class, 'getFlatTypes']);
             Route::post('add-flat',[FlatController::class,'addFlat']);
@@ -73,9 +67,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
             //Flats operations-------------end
         //Project operations-------------end
 
-
-
         //Trips operations-------------start
+        Route::post('new-trip',[TripController::class,'newTrip']);
         Route::get('all-trips', [TripController::class, 'getAllTrips']);
         //Trips operations-------------end
 

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
+use App\Http\Resources\UsersResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -12,7 +14,11 @@ class UserController extends Controller
 {
     public function getAllUsers()
     {
-        return User::with('role')->get();
+        return new UsersResource(User::all(['id','first_name','last_name','role']));
+    }
+
+    public function getUser($id){
+        return new UserResource(User::findOrFail($id));
     }
 
     /**
