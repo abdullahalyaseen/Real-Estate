@@ -23,6 +23,7 @@ class PhotoFactory extends Factory
     {
         return [
             'url'=>$this->faker->imageUrl(),
+            'path'=>$this->faker->imageUrl(),
             'project_id'=>mt_rand(0,50),
         ];
     }

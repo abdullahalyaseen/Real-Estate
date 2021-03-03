@@ -54,6 +54,7 @@ class Project extends Model
         static::deleted(function (Project $project) {
             $id = $project->id;
             Storage::deleteDirectory('/images/projects/'.$id.'/');
+            Storage::deleteDirectory('/videos/projects/'.$id.'/');
             $project->marker()->delete();
             $project->photos()->delete();
             $project->videos()->delete();

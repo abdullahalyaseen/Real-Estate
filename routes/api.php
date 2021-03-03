@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\ProjectController;
 use App\Http\Controllers\Api\RepresController;
 use App\Http\Controllers\Api\TripController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\VideoController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -44,6 +45,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::delete('delete-project/{id}', [ProjectController::class, 'deleteProject']);
         Route::post('update-project/{id}', [ProjectController::class, 'updateProject']);
         Route::post('project/{id}/add-photos', [ProjectController::class, 'addProjectPhotos']);
+        Route::post('project/{id}/add-videos', [ProjectController::class, 'addProjectVideos']);
         //Project operations-------------end
 
         //Representative operations-------------start
@@ -57,11 +59,13 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         //Photos operations-------------start
         Route::delete('photos/{id}', [PhotoController::class, 'deletePhoto']);
         //Photos operations-------------end
+        //Photos operations-------------start
+        Route::delete('videos/{id}', [VideoController::class, 'deleteVideo']);
+        //Photos operations-------------end
 
         //Trips operations-------------start
         Route::get('all-trips', [TripController::class, 'getAllTrips']);
         //Trips operations-------------end
-
 
     });
     //For only-admin operations ----- end

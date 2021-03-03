@@ -29,16 +29,21 @@ class ProjectController extends Controller
      */
     public function getProjectById($id)
     {
-        $project = Project::with('flats', 'repres', 'marker', 'photos')->where('id', $id)->first();
+        $project = Project::with('flats', 'repres', 'marker', 'photos', 'videos')->where('id', $id)->first();
 
         return new ProjectResource($project);
 
     }
 
+    /**
+     * @param Request $request
+     * @return Application|ResponseFactory|Response
+     * @throws \Throwable
+     */
     public function createProject(Request $request)
     {
         $request->validate([
-            'name' => ['required', 'regex:/^([a-zA-Z]+)(\s[a-zA-Z]+)*$/', 'max:50'],
+            'name' => ['required', 'regex:/^([a-zA-Z]+)(\s[a-zA-Z]+)*$/', 'max:50', 'unique:projects'],
             'province' => ['required', 'regex:/^([a-zA-Z]+)(\s[a-zA-Z]+)*$/', 'max:50'],
             'district' => ['required', 'regex:/^([a-zA-Z]+)(\s[a-zA-Z]+)*$/', 'max:50'],
             'under_constructions' => ['required', 'boolean'],
@@ -78,38 +83,15 @@ class ProjectController extends Controller
         ///Create Representative for Project:
         RepresController::createRepres($request->repres_name, $request->phone_number, $projectId);
 
-        return response(['message' => $project->name . ' ' . 'has been created'], 200);
+        return response(['message' => $project->name . ' ' . 'has been created', 'project_id' => $projectId], 200);
     }
 
     /**
+     * @param Request $request
      * @param $id
      * @return Application|ResponseFactory|Response
      */
-    public
-    function deleteProject($id)
-    {
-        $project = Project::findOrFail($id);
-        $name = $project->name;
-        $project->delete();
-        return response(['message' => $name . ' ' . 'has been deleted'], 200);
-    }
-
-
-    public
-    function addProjectPhotos(Request $request, $id)
-    {
-        $project = Project::findOrFail($id);
-        $request->validate([
-            'files' => ['required', 'image', 'max:10240']
-        ]);
-
-        return PhotoController::addProjectPhotos($request, $project->id);
-
-    }
-
-
-    public
-    function updateProject(Request $request, $id)
+    public function updateProject(Request $request, $id)
     {
         $request->validate([
             'name' => ['regex:/^([a-zA-Z]+)(\s[a-zA-Z]+)*$/', 'max:50'],
@@ -126,4 +108,63 @@ class ProjectController extends Controller
         $project->update($request->toArray());
         return response(['message' => $project->name . 'has been updated'], 200);
     }
+
+    /**
+     * @param $id
+     * @return Application|ResponseFactory|Response
+     */
+    public function deleteProject($id)
+    {
+        $project = Project::findOrFail($id);
+        $name = $project->name;
+        $project->delete();
+        return response(['message' => $name . ' ' . 'has been deleted'], 200);
+    }
+
+
+    /**
+     * @param Request $request
+     * @param $id
+     * @return Application|ResponseFactory|Response
+     */
+    public function addProjectVideos(Request $request, $id)
+    {
+        $project = Project::findOrFail($id);
+        $request->validate([
+            'video.*' => ['required', 'mimes:mp4', 'max:20480'],
+        ]);
+
+        $result = VideoController::addProjectVideos($request, $project->id);
+
+        if ($result) {
+            return response(['message' => 'Video has been added'], 200);
+        } else {
+            return response(['message' => 'No thing changed'], 200);
+        }
+
+    }
+
+
+    /**
+     * @param Request $request
+     * @param $id
+     * @return Application|ResponseFactory|Response
+     */
+    public function addProjectPhotos(Request $request, $id)
+    {
+        $project = Project::findOrFail($id);
+        $request->validate([
+            'image.*' => ['required', 'image', 'max:10240']
+        ]);
+
+        $result = PhotoController::addProjectPhotos($request, $project->id);
+        if ($result) {
+            return response(['message' => 'Photos has been added'], 200);
+        } else {
+            return response(['message' => 'No thing changed'], 200);
+        }
+
+    }
+
+
 }

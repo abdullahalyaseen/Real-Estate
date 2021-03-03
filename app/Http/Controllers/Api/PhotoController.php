@@ -10,21 +10,29 @@ use Illuminate\Support\Facades\Storage;
 class PhotoController extends Controller
 {
     public static function addProjectPhotos(Request $request , $projectId){
-        $files = $request->allFiles();
+        $counter = 0;
+        $files = $request->file('image');
         foreach ($files as $file){
-            $path = $file->store('/images/projects/'.$projectId);
+            $fileName = time().'-'.str_shuffle('qwertyuiopasdfg').'.'.$file->getClientOriginalExtension();
+            $path = $file->storeAs('/images/projects/'.$projectId,$fileName);
             $photo = new Photo();
-            $photo->url = $path;
+            $photo->path = $path;
+            $photo->url = env('APP_URL').'/'.$path;
             $photo->project_id = $projectId;
             $photo->save();
+            $counter++;
         }
 
-        return Photo::where('project_id', '=', $projectId)->get();
+        if($counter > 0){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     public function deletePhoto($id){
         $photo = Photo::find($id);
-        $path = $photo->url;
+        $path = $photo->path;
 
         Storage::delete($path);
         $photo->delete();
