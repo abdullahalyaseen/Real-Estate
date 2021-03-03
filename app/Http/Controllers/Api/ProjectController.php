@@ -91,9 +91,10 @@ class ProjectController extends Controller
      * @param $id
      * @return Application|ResponseFactory|Response
      */
-    public function updateProject(Request $request, $id)
+    public function updateProject(Request $request)
     {
         $request->validate([
+            'project_id'=>['required','numeric'],
             'name' => ['regex:/^([a-zA-Z]+)(\s[a-zA-Z]+)*$/', 'max:50'],
             'province' => ['regex:/^([a-zA-Z]+)(\s[a-zA-Z]+)*$/', 'max:50'],
             'district' => ['regex:/^([a-zA-Z]+)(\s[a-zA-Z]+)*$/', 'max:50'],
@@ -104,7 +105,7 @@ class ProjectController extends Controller
             'type' => ['regex:/^([a-zA-Z]+)(\s[a-zA-Z]+)*$/', 'max:50'],
             'specifications' => ['array', 'max:100'],
         ]);
-        $project = Project::find($id);
+        $project = Project::find($request->get('project_id'));
         $project->update($request->toArray());
         return response(['message' => $project->name . 'has been updated'], 200);
     }
@@ -127,10 +128,11 @@ class ProjectController extends Controller
      * @param $id
      * @return Application|ResponseFactory|Response
      */
-    public function addProjectVideos(Request $request, $id)
+    public function addProjectVideos(Request $request)
     {
-        $project = Project::findOrFail($id);
+        $project = Project::findOrFail($request->get('project_id'));
         $request->validate([
+            'project_id'=>['required','numeric'],
             'video.*' => ['required', 'mimes:mp4', 'max:20480'],
         ]);
 
@@ -150,10 +152,11 @@ class ProjectController extends Controller
      * @param $id
      * @return Application|ResponseFactory|Response
      */
-    public function addProjectPhotos(Request $request, $id)
+    public function addProjectPhotos(Request $request)
     {
-        $project = Project::findOrFail($id);
+        $project = Project::findOrFail($request->get('project_id'));
         $request->validate([
+            'project_id'=>['required','numeric'],
             'image.*' => ['required', 'image', 'max:10240']
         ]);
 
