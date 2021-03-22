@@ -35,4 +35,5 @@ class MarkerController extends Controller
         Marker::find($id)->update($request->toArray());
         return response(['message'=>'Marker has been updated'],200);
     }
+
 }

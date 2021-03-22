@@ -24,6 +24,7 @@ class CreateProjectsTable extends Migration
             $table->double('max_price');
             $table->string('type');
             $table->json('specifications');
+            $table->boolean('is_archived');
             $table->timestamps();
         });
     }

@@ -14,7 +14,8 @@ class UserController extends Controller
 {
     public function getAllUsers()
     {
-        return new UsersResource(User::all(['id','first_name','last_name','role']));
+        return new UsersResource(User::where('is_archived', '=','0')->get(['id','first_name','last_name','role']));
+
     }
 
     public function getUser($id){

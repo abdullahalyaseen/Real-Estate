@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Trip extends Model
 {
@@ -19,5 +20,14 @@ class Trip extends Model
 
     public function targets(){
         return $this->hasMany(Target::class,'trip_id','id');
+    }
+
+
+    public static function boot()
+    {
+        parent::boot();
+        static::deleted(function (Trip $trip) {
+            $trip->targets()->delete();
+        });
     }
 }

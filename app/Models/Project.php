@@ -47,6 +47,9 @@ class Project extends Model
     {
         return $this->hasMany(Video::class, 'project_id', 'id');
     }
+    public function targets(){
+        return $this->hasMany(Target::class,'project_id','id');
+    }
 
     public static function boot()
     {

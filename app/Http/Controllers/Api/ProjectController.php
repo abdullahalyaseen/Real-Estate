@@ -19,8 +19,12 @@ class ProjectController extends Controller
      */
     public function getAllProjects()
     {
-        $projects = Project::paginate(10);
-        return new ProjectsResource($projects);
+        return new ProjectsResource(Project::where('is_archived', '=','0')->paginate(10));
+    }
+
+    public function getArchivedProjects()
+    {
+        return new ProjectsResource(Project::where('is_archived', '=','1')->paginate(10));
     }
 
     /**
@@ -117,9 +121,14 @@ class ProjectController extends Controller
     public function deleteProject($id)
     {
         $project = Project::findOrFail($id);
-        $name = $project->name;
-        $project->delete();
-        return response(['message' => $name . ' ' . 'has been deleted'], 200);
+        if(!($project->targets()->exists())){
+            $name = $project->name;
+            $project->delete();
+            return response(['message' => $name . ' ' . 'has been deleted'], 200);
+    }else{
+            return response(['message'=>'Project has Trips can not be removed'],401);
+        }
+
     }
 
 

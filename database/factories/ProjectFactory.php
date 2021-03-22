@@ -30,6 +30,7 @@ class ProjectFactory extends Factory
             'max_price' => mt_rand(50000, 200000) + 0.35,
             'type' => 'site',
             'specifications' => json_encode($this->faker->words(mt_rand(5,10))),
+            'is_archived' => false,
 
         ];
     }

@@ -30,6 +30,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('all-locations', [MarkerController::class, 'getAllMarkers']);
     Route::get('all-projects', [ProjectController::class, 'getAllProjects']);
     Route::get('project/{id}', [ProjectController::class, 'getProjectById']);
+
     //For common purpose operations ----- end
 
     //For only-admin operations ----- start
@@ -46,6 +47,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::post('new-project', [ProjectController::class, 'createProject']);
         Route::delete('delete-project/{id}', [ProjectController::class, 'deleteProject']);
         Route::post('update-project', [ProjectController::class, 'updateProject']);
+        Route::get('archived-projects', [ProjectController::class, 'getArchivedProjects']);
             //Representative operations-------------start
             Route::post('update-repres/{id}', [RepresController::class, 'updateRepres']);
             //Representative operations-------------end

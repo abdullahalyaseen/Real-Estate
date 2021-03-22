@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('role');
             $table->string('number');
+            $table->boolean('is_archived');
             $table->rememberToken();
             $table->timestamps();
         });
