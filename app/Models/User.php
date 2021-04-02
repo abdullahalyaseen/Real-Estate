@@ -49,6 +49,10 @@ class User extends Authenticatable
         return $this->hasMany(Trip::class,'user_id','id');
     }
 
+    public function departments(){
+        return $this->belongsToMany(Department::class);
+    }
+
     public static function boot(){
         parent::boot();
         static::deleted(function (User $user){

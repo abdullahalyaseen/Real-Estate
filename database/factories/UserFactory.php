@@ -31,7 +31,7 @@ class UserFactory extends Factory
             'role' => 'admin',
             'number' => "0090".strval($this->faker->randomNumber(3)).strval($this->faker->randomNumber(7)),
             'remember_token' => Str::random(10),
-            'is_archived' => false,
+            'is_active' => true,
         ];
     }
 

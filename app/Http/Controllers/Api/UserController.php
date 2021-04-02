@@ -14,7 +14,7 @@ class UserController extends Controller
 {
     public function getAllUsers()
     {
-        return new UsersResource(User::where('is_archived', '=','0')->get(['id','first_name','last_name','role']));
+        return new UsersResource(User::get(['id','first_name','last_name','role','is_active']));
 
     }
 
@@ -68,9 +68,9 @@ class UserController extends Controller
         ]);
         ///Convert $request to array in order ot make password hash
         $data = $request->toArray();
-        if($data['password']){
-            $data['password'] = Hash::make($data['password']);
-        }
+//        if($data['password']){
+//            $data['password'] = Hash::make($data['password']);
+//        }
         ///Using ->update to update any field optionally and according to fillable
         /// in User model
         $user = User::findOrFail($id)->update($data);
