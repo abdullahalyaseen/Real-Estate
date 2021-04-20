@@ -44,7 +44,8 @@ class DatabaseSeeder extends Seeder
             'add_user',
             'edit_user',
             'delete_user',
-            'view_customer',
+            'view_all_customers',
+            'view_assigned_customers',
             'add_customer',
             'edit_customer',
             'delete_customer',
@@ -52,11 +53,16 @@ class DatabaseSeeder extends Seeder
             'add_project',
             'edit_project',
             'delete_project',
+            'view_customer_note',
+            'add_customer_note',
+            'edit_customer_note',
+            'delete_customer_note',
+
         ];
 
-        foreach ($perms as $perm){
+        foreach ($perms as $perm) {
             $temp = [
-              'title'=>strval($perm)
+                'title' => strval($perm)
             ];
             Permission::create($temp);
         }
@@ -65,7 +71,6 @@ class DatabaseSeeder extends Seeder
             'title' => 'management'
         ];
         Department::create($department);
-
 
 
 //        User::factory(6)->create();

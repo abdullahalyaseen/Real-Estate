@@ -20,29 +20,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f07a8819-03bd-4d96-8e38-b5005be89126" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/mapapp.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/mapapp.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/auth/login.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/AuthController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/AuthController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/DepartmentController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/DepartmentController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/UserController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Kernel.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Kernel.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Middleware/AuthGates.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Middleware/AuthGates.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Department.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Department.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Permission.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Permission.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Models/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/User.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/auth.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/auth.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/cors.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/cors.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/sanctum.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/sanctum.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/factories/UserFactory.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/factories/UserFactory.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2014_10_12_000000_create_users_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2014_10_12_000000_create_users_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2021_04_02_020557_department_user.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_04_02_020557_department_user.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/database/seeders/DatabaseSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeders/DatabaseSeeder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/bootstrap.js" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/bootstrap.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/welcome.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/welcome.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/webpack.mix.js" beforeDir="false" afterPath="$PROJECT_DIR$/webpack.mix.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -220,7 +208,14 @@
       <workItem from="1617150687190" duration="147000" />
       <workItem from="1617151373162" duration="730000" />
       <workItem from="1617204388931" duration="727000" />
-      <workItem from="1617324949426" duration="8681000" />
+      <workItem from="1617324949426" duration="12985000" />
+      <workItem from="1617453968441" duration="5159000" />
+      <workItem from="1618427492271" duration="1718000" />
+      <workItem from="1618602187838" duration="1692000" />
+      <workItem from="1618792650652" duration="34000" />
+      <workItem from="1618792695871" duration="48000" />
+      <workItem from="1618793733211" duration="6949000" />
+      <workItem from="1618862249096" duration="5782000" />
     </task>
     <servers />
   </component>
@@ -244,6 +239,10 @@
       <screen x="0" y="25" width="1920" height="985" />
     </state>
     <state x="689" y="351" key="#com.intellij.fileTypes.FileTypeChooser/0.25.1920.985@0.25.1920.985" timestamp="1614669995438" />
+    <state x="323" y="391" key="#com.intellij.ide.actions.ChooseComponentsToExportDialog" timestamp="1618792680529">
+      <screen x="0" y="25" width="1920" height="985" />
+    </state>
+    <state x="323" y="391" key="#com.intellij.ide.actions.ChooseComponentsToExportDialog/0.25.1920.985@0.25.1920.985" timestamp="1618792680529" />
     <state x="215" y="276" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1617336220203">
       <screen x="0" y="25" width="1920" height="985" />
     </state>
@@ -276,5 +275,9 @@
       <screen x="0" y="25" width="1920" height="985" />
     </state>
     <state x="672" y="272" width="602" height="490" key="find.popup/0.25.1920.985@0.25.1920.985" timestamp="1614575321823" />
+    <state x="161" y="242" width="670" height="676" key="search.everywhere.popup" timestamp="1618818145514">
+      <screen x="0" y="25" width="1920" height="985" />
+    </state>
+    <state x="161" y="242" width="670" height="676" key="search.everywhere.popup/0.25.1920.985@0.25.1920.985" timestamp="1618818145514" />
   </component>
 </project>

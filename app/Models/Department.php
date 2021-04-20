@@ -9,13 +9,17 @@ class Department extends Model
 {
     use HasFactory;
 
-
+    protected $hidden = [
+        "created_at",
+        "updated_at",
+        "pivot"
+    ];
     public function users(){
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class,'department_user');
     }
 
     public function permissions(){
-        return $this->belongsToMany(Permission::class);
+        return $this->belongsToMany(Permission::class,'department_permission');
     }
 }
 

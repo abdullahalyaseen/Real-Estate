@@ -22,7 +22,7 @@ class User extends Authenticatable
         'last_name',
         'email',
         'password',
-        'role',
+        'is_active',
         'number'
     ];
 
@@ -34,6 +34,9 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        "updated_at",
+        "created_at",
+        'email_verified_at'
     ];
 
     /**
@@ -50,7 +53,7 @@ class User extends Authenticatable
     }
 
     public function departments(){
-        return $this->belongsToMany(Department::class);
+        return $this->belongsToMany(Department::class,'department_user');
     }
 
     public static function boot(){

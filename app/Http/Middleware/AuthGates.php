@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Customer;
 use App\Models\Department;
 use App\Models\User;
 use Closure;
@@ -33,6 +34,7 @@ class AuthGates
                     return count(array_intersect($user->departments->pluck('id')->toArray(),$departments)) > 0;
                 });
             }
+
         }
         return $next($request);
     }

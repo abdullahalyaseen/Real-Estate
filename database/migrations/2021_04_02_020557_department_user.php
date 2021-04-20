@@ -14,10 +14,10 @@ class DepartmentUser extends Migration
     public function up()
     {
         Schema::create('department_user',function (Blueprint $table){
-            $table->unsignedInteger('user_id');
             $table->unsignedInteger('department_id');
+            $table->unsignedInteger('user_id');
 
-            $table->unique(['user_id','department_id']);
+            $table->unique(['department_id','user_id']);
 //            $table->foreign('user_id')->references('id')->on('users');
 //            $table->foreign('department_id')->references('id')->on('department');
         });

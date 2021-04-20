@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\DepartmentController;
 use App\Http\Controllers\Api\FlatController;
 use App\Http\Controllers\Api\MarkerController;
 use App\Http\Controllers\Api\PhotoController;
@@ -14,6 +15,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -34,23 +36,19 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
 
     Route::group(['middleware' => ['authgates']], function () {
-        Route::get('test',function (Request $request){
-            return Gate::has('view_users');
-
-        });
-    });
+        Route::get('ability',[UserController::class,'getAbilities']);
+        route::get('departments',[DepartmentController::class,'index']);
 
 
+        //For common purpose operations ----- start
+        Route::get('all-locations', [MarkerController::class, 'getAllMarkers']);
+        Route::get('all-projects', [ProjectController::class, 'getAllProjects']);
+        Route::get('project/{id}', [ProjectController::class, 'getProjectById']);
 
-    //For common purpose operations ----- start
-    Route::get('all-locations', [MarkerController::class, 'getAllMarkers']);
-    Route::get('all-projects', [ProjectController::class, 'getAllProjects']);
-    Route::get('project/{id}', [ProjectController::class, 'getProjectById']);
+        //For common purpose operations ----- end
 
-    //For common purpose operations ----- end
+        //For only-admin operations ----- start
 
-    //For only-admin operations ----- start
-    Route::group(['middleware' => ['isadmin']], function () {
         //User operations-------------start
         Route::get('all-users', [UserController::class, 'getAllUsers']);
         Route::get('user/{id}', [UserController::class, 'getUser']);
