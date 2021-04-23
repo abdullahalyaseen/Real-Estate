@@ -41,7 +41,7 @@ class UserController extends Controller
             'first_name' => ['required', 'regex:/^([a-zA-Z]+)(\s[a-zA-Z]+)*$/', 'max:20'],
             'last_name' => ['required', 'regex:/^([a-zA-Z]+)(\s[a-zA-Z]+)*$/', 'max:20'],
             'email' => ['email', 'required', 'unique:users', 'max:64'],
-            'password' => ['required', 'max:32', 'confirmed'],
+            'password' => ['required', 'max:64','min:8', 'confirmed'],
             'role' => ['required', 'max:5'],
             'number' => ['required', 'digits_between:10,15',],
         ]);
@@ -93,14 +93,18 @@ class UserController extends Controller
               return $this->update($user,$data);
           }
       }
-
-//        $userEmail = User::find($id)->get('email')[0]->email;
-
-//        User::findOrFail($id)->update($data);
-//        return response(['message' => 'User has been updated'], 200);
-
     }
 
+    public function changePassword(Request $request , $id){
+        if(Gate::allows('edit_user')){
+            $data = $request->validate([
+                'password' => ['required', 'max:64','min:8', 'confirmed'],
+            ]);
+            $user = User::findOrFail($id);
+            $user->password = Hash::make($request->get('password'));
+            return response(['message'=>'Password changed'],200);
+        }
+    }
 
     /**
      * @param Request $request
@@ -108,11 +112,15 @@ class UserController extends Controller
      */
     public function deleteUser($id)
     {
-        if (User::find($id)) {
-            User::find($id)->delete();
-            return response(['message' => 'User has been deleted'], 200);
-        }
-        return response(['messages' => 'No user to delete'], 400);
+       if(Gate::allows('delete_user')){
+           if (User::find($id)) {
+               User::find($id)->delete();
+               return response(['message' => 'User has been deleted'], 200);
+           }
+           return response(['messages' => 'No user to delete'], 400);
+       }else{
+           return response(['message'=>'you don\'t have ability to delete this user'],400);
+       }
     }
 
     public function getAbilities(Request $request)

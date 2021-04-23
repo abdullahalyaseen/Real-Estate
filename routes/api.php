@@ -31,7 +31,7 @@ use Illuminate\Http\Request;
 Route::post('token-login', [AuthController::class, 'login']);
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('user', function (Request $request) {
-        return $request->user();
+        return $request->user()->id;
     });
 
 
@@ -54,6 +54,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('user/{id}', [UserController::class, 'getUser']);
         Route::post('new-user', [UserController::class, 'createUser']);
         Route::post('update-user/{id}', [UserController::class, 'updateUser']);
+        route::post('change-password/{id}',[UserController::class,'changePassword']);
         Route::delete('delete-user/{id}', [UserController::class, 'deleteUser']);
         //User operations-------------end
 
