@@ -28,7 +28,15 @@ class UserController extends Controller
 
     public function getUser($id)
     {
-        return new UserResource(User::where('id','=',$id)->with('departments')->get());
+        if(Gate::allows('view_users')){
+            $response = User::with('departments')->where('id', '=', $id)->get();
+
+            if ($response->count() != 0) {
+                return new UserResource($response);
+            } else {
+                return response([], 404);
+            }
+        }
     }
 
     /**
@@ -37,26 +45,39 @@ class UserController extends Controller
      */
     public function createUser(Request $request)
     {
-        $request->validate([
+        $data = $request->validate([
             'first_name' => ['required', 'regex:/^([a-zA-Z]+)(\s[a-zA-Z]+)*$/', 'max:20'],
             'last_name' => ['required', 'regex:/^([a-zA-Z]+)(\s[a-zA-Z]+)*$/', 'max:20'],
-            'email' => ['email', 'required', 'unique:users', 'max:64'],
-            'password' => ['required', 'max:64','min:8', 'confirmed'],
-            'role' => ['required', 'max:5'],
-            'number' => ['required', 'digits_between:10,15',],
+            'email' => ['email', 'required', 'unique:users', 'max:32'],
+            'password' => ['required', 'max:64', 'min:8', 'confirmed'],
+            'role' => ['regex:/^([a-zA-Z]+)(\s[a-zA-Z]+)*$/', 'exists:departments,title'],
+            'number' => ['required', 'regex:/^\+(9[976]\d|8[987530]\d|6[987]\d|5[90]\d|42\d|3[875]\d|2[98654321]\d|9[8543210]|8[6421]|6[6543210]5[87654321]|4[987654310]|3[9643210]|2[70]|7|1)\d{1,14}$/'],
         ]);
 
-        $user = new User();
+        if (Gate::allows('add_user')) {
 
-        $user->first_name = $request->first_name;
-        $user->last_name = $request->last_name;
-        $user->email = $request->email;
-        $user->password = Hash::make($request->password);
-        $user->role = $request->role;
-        $user->number = $request->number;
 
-        $user->save();
-        return $user;
+            $user = new User();
+
+            $user->first_name = $request->first_name;
+            $user->last_name = $request->last_name;
+            $user->email = $request->email;
+            $user->password = Hash::make($request->password);
+            $user->number = $request->number;
+            $user->is_active = $request->is_active;
+            $user->save();
+
+            $userId = $user->id;
+            //take the department name from data sent to API
+            $roleTitle = $data['role'];
+            //find the department id
+            $roleId = Department::where('title', '=', $roleTitle)->first('id')['id'];
+            //TODO: Link between user and department
+
+            $user->departments()->attach($roleId, ['user_id' => $userId]);
+
+            return $user;
+        }
     }
 
 
@@ -79,30 +100,31 @@ class UserController extends Controller
         ///Using ->update to update any field optionally and according to fillable
         /// in User model
 
-      if(Gate::allows('edit_user')){
-          $user = User::findOrFail($id);
-          $requesrUser = User::where('email', '=', $data['email'])->get('id')->toArray();
-          if (count($requesrUser) != 0) {
-              $requestId = $requesrUser[0]['id'];
-              if ($requestId == $id) {
-                  return $this->update($user,$data);
-              } else {
-                  return response(['message'=>'used email'],405);
-              }
-          }else{
-              return $this->update($user,$data);
-          }
-      }
+        if (Gate::allows('edit_user')) {
+            $user = User::findOrFail($id);
+            $requesrUser = User::where('email', '=', $data['email'])->get('id')->toArray();
+            if (count($requesrUser) != 0) {
+                $requestId = $requesrUser[0]['id'];
+                if ($requestId == $id) {
+                    return $this->update($user, $data);
+                } else {
+                    return response(['message' => 'used email'], 405);
+                }
+            } else {
+                return $this->update($user, $data);
+            }
+        }
     }
 
-    public function changePassword(Request $request , $id){
-        if(Gate::allows('edit_user')){
+    public function changePassword(Request $request, $id)
+    {
+        if (Gate::allows('edit_user')) {
             $data = $request->validate([
-                'password' => ['required', 'max:64','min:8', 'confirmed'],
+                'password' => ['required', 'max:64', 'min:8', 'confirmed'],
             ]);
             $user = User::findOrFail($id);
             $user->password = Hash::make($request->get('password'));
-            return response(['message'=>'Password changed'],200);
+            return response(['message' => 'Password changed'], 200);
         }
     }
 
@@ -112,15 +134,18 @@ class UserController extends Controller
      */
     public function deleteUser($id)
     {
-       if(Gate::allows('delete_user')){
-           if (User::find($id)) {
-               User::find($id)->delete();
-               return response(['message' => 'User has been deleted'], 200);
-           }
-           return response(['messages' => 'No user to delete'], 400);
-       }else{
-           return response(['message'=>'you don\'t have ability to delete this user'],400);
-       }
+        if (Gate::allows('delete_user')) {
+            if (User::find($id)) {
+                $user = User::find($id);
+                $userDepartmentId = $user->departments()->first()->id;
+                $user->departments()->detach($userDepartmentId, ['user_id' => $id]);
+                $user->delete();
+                return response(['message' => 'User has been deleted'], 200);
+            }
+            return response(['messages' => 'No user to delete'], 400);
+        } else {
+            return response(['message' => 'you don\'t have ability to delete this user'], 400);
+        }
     }
 
     public function getAbilities(Request $request)
@@ -144,16 +169,17 @@ class UserController extends Controller
      * @param $data
      * @return mixed
      */
-    private function update (User $user , $data){
+    private function update(User $user, $data)
+    {
         //take the new department name from data sent to API
         $roleTitle = $data['role'];
         //get the original department the user in
         $userOriginalDepartmentId = $user->departments()->first()->id;
         //find the new department id
-        $newRoleId = Department::where('title','=',$roleTitle)->first('id')['id'];
+        $newRoleId = Department::where('title', '=', $roleTitle)->first('id')['id'];
         //find the original department the user in and update the pivot table with
         //new department_id for that user id
-        Department::find($userOriginalDepartmentId)->users()->updateExistingPivot($user->id,['department_id'=>$newRoleId],true);
+        Department::find($userOriginalDepartmentId)->users()->updateExistingPivot($user->id, ['department_id' => $newRoleId], true);
 
         unset($data['role']);
         return $user->update($data);
